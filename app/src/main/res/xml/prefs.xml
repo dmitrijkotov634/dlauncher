@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+    <PreferenceCategory
+        android:title="@string/colors">
+        
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="nb"
+            android:title="@string/nb"
+            android:defaultValue="#000000"
+            alphaSlider="false" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="nf"
+            android:title="@string/nf"
+            android:defaultValue="#F3F3F3"
+            alphaSlider="false" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="sb"
+            android:title="@string/sb"
+            android:defaultValue="#005577"
+            alphaSlider="false" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="sf"
+            android:title="@string/sf"
+            android:defaultValue="#FFFFFF"
+            alphaSlider="false" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/layout">
+        
+        <ListPreference
+            android:key="gravity"
+            android:title="@string/g"
+            android:defaultValue="0"
+            android:entries="@array/gravity"
+            android:entryValues="@array/def_gravity"
+            android:dialogTitle="@string/selpos"/>
+        
+    </PreferenceCategory>
+    
+</PreferenceScreen>

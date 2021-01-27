@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dlauncher</string>
+    <string name="settings_name">Launcher Settings</string>
+    
+    <string name="nb">Normal Background Color</string>
+    <string name="nf">Normal Foreground Color"</string>
+    <string name="sb">Selected Background Color</string>
+    <string name="sf">Selected Foreground Color</string>
+    
+    <string name="g">Panel position</string>
+    
+    <string-array name="gravity">
+        <item>Top</item>
+        <item>Bottom</item>
+	</string-array>
+    
+    <string name="colors">Colors</string>
+    <string name="layout">Layout</string>
+    <string name="selpos">Select position</string>
+    
+</resources>

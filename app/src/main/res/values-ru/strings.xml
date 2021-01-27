@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="nb">Нормальный цвет фона</string>
+    <string name="nf">Нормальный цвет переднего плана</string>
+    <string name="sb">Выделенный цвет фона</string>
+    <string name="sf">Выделенный цвет переднего плана</string>
+    
+    <string name="g">Позиция панели</string>
+    
+    <string-array name="gravity">
+        <item>Верх</item>
+        <item>Низ</item>
+	</string-array>
+    
+    <string name="colors">Цвета</string>
+    <string name="layout">Макет</string>
+    <string name="selpos">Выберите позицию</string>
+    
+</resources>
