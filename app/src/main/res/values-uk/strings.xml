@@ -6,7 +6,8 @@
     <string name="sb">Виділений колір фону</string>
     <string name="sf">Виділений колір переднього плану</string>
     
-    <string name="g">Позиція панелі</string>
+    <string name="gravity">Позиція панелі</string>
+    <string name="size">Розмір тексту</string>
     
     <string-array name="gravity">
         <item>Верх</item>

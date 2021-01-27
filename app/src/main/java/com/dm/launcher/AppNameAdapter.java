@@ -15,13 +15,14 @@ import android.provider.Settings;
 public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHolder> {
 
     public EditText searchBar;
-    int nb, nf, sb, sf;
+    int nb, nf, sb, sf, textSize;
 
     public List<AppInfo> data;
-    public AppNameAdapter(List<AppInfo> data, EditText searchBar, int nb, int nf, int sb, int sf) {
+    public AppNameAdapter(List<AppInfo> data, EditText searchBar, int nb, int nf, int sb, int sf, int textSize) {
         this.data = data;
         this.searchBar = searchBar;
         this.nb = nb; this.nf = nf; this.sb = sb; this.sf = sf;
+        this.textSize = textSize;
     }
 
     @Override
@@ -54,8 +55,10 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
             super(view);
 
             this.appName = view.findViewById(R.id.app_name);
+            
+            appName.setTextSize(textSize);
+            
             view.setOnClickListener(this);
-
             view.setOnLongClickListener(new OnLongClickListener() { 
                     @Override
                     public boolean onLongClick(View view) {

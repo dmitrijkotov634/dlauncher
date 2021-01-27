@@ -14,7 +14,7 @@
 
 		<EditText
 			android:id="@+id/search_bar"
-			android:layout_width="wrap_content"
+			android:layout_width="110dp"
 			android:layout_height="wrap_content"
 			android:imeOptions="actionSearch"
 			android:inputType="text"
@@ -22,7 +22,6 @@
 			android:textColor="#FFFFFFFF"
 			android:background="@null"
 			android:textSize="15sp"
-			android:ems="6"
 			android:layout_marginLeft="8dp"/>
 
 		<android.support.v7.widget.RecyclerView

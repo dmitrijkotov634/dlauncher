@@ -8,7 +8,8 @@
     <string name="sb">Selected Background Color</string>
     <string name="sf">Selected Foreground Color</string>
     
-    <string name="g">Panel position</string>
+    <string name="gravity">Panel position</string>
+    <string name="size">Text size</string>
     
     <string-array name="gravity">
         <item>Top</item>

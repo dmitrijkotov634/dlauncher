@@ -37,11 +37,17 @@
         
         <ListPreference
             android:key="gravity"
-            android:title="@string/g"
+            android:title="@string/gravity"
             android:defaultValue="0"
             android:entries="@array/gravity"
             android:entryValues="@array/def_gravity"
             android:dialogTitle="@string/selpos"/>
+        
+        <EditTextPreference
+            android:key="size"
+            android:title="@string/size"
+            android:defaultValue="15"
+            android:inputType="numberSigned"/>
         
     </PreferenceCategory>
     

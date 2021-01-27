@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     private List<AppInfo> apps;
     SharedPreferences prefs;
 
-    int nb, nf, sb, sf;
+    int nb, nf, sb, sf, textSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class MainActivity extends Activity {
                             find.add(info);
                     }
 
-                    listAdapter = new AppNameAdapter(find, searchBar, nb, nf, sb, sf);
+                    listAdapter = new AppNameAdapter(find, searchBar, nb, nf, sb, sf, textSize);
                     appMenu.setAdapter(listAdapter);
                 }
             });
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
                 public void run() {
                     apps = getAppsList();
-                    listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf);
+                    listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf, textSize);
 
                     appMenu.post(new Runnable() {
                             public void run() {
@@ -126,7 +126,9 @@ public class MainActivity extends Activity {
         nf = prefs.getInt("nf", 0xFFF3F3F3);
         sb = prefs.getInt("sb", 0xFF005577);
         sf = prefs.getInt("sf", 0xFFFFFFFF);
-
+        
+        textSize = Integer.valueOf(prefs.getString("size", "15"));
+        
         switch (prefs.getString("gravity", "0")) {
         case "0":
             ((LinearLayout.LayoutParams) menu.getLayoutParams()).gravity = Gravity.TOP;
@@ -136,7 +138,9 @@ public class MainActivity extends Activity {
             break;
         }
         
+        searchBar.setTextSize(textSize);
         searchBar.setTextColor(nf);
+        
         menu.setBackgroundColor(nb);
     }
 
