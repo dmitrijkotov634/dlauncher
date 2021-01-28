@@ -18,6 +18,9 @@
     
     <string name="colors">Colors</string>
     <string name="layout">Layout</string>
-    <string name="selpos">Select position</string>
+    <string name="other">Other</string>
     
+    <string name="search">Enable Google search</string>
+    <string name="search_item">Google search</string>
+    <string name="selpos">Select position</string>
 </resources>

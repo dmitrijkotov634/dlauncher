@@ -75,12 +75,19 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent();
-            intent.setClassName(data.get(getLayoutPosition()).packageName,
-                                data.get(getLayoutPosition()).activity);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            view.getContext().startActivity(intent);
-            searchBar.setText("");
+            if (data.get(getLayoutPosition()).packageName == null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
+                view.getContext().startActivity(intent);
+            } else {
+                Intent intent = new Intent();
+                intent.setClassName(data.get(getLayoutPosition()).packageName,
+                                    data.get(getLayoutPosition()).activity);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+                searchBar.setText("");
+            }
+            
         }
     }
 }

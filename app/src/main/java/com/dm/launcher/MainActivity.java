@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+import android.net.Uri;
 
 public class MainActivity extends Activity { 
 
@@ -35,6 +37,9 @@ public class MainActivity extends Activity {
     SharedPreferences prefs;
 
     int nb, nf, sb, sf, textSize;
+    int mode;
+
+    boolean search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +56,31 @@ public class MainActivity extends Activity {
             = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         appMenu.setLayoutManager(AppMenu);
-
+        
+        apps = new ArrayList<AppInfo>();
+        
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH && listAdapter.data.size() > 0) {
-                        Intent intent = new Intent();
-                        intent.setClassName(listAdapter.data.get(0).packageName,
-                                            listAdapter.data.get(0).activity);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        searchBar.setText("");
-                        return true;
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (listAdapter.data.size() > 0) {
+                            String pkg = listAdapter.data.get(0).packageName;
+
+                            if (pkg == null && search) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW,
+                                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
+                                startActivity(intent);
+
+                            } else {
+                                Intent intent = new Intent();
+                                intent.setClassName(pkg, listAdapter.data.get(0).activity);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+
+                            searchBar.setText("");
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -82,18 +100,25 @@ public class MainActivity extends Activity {
                                           int before, int count) {
                     List<AppInfo> find = new ArrayList<>();
 
-                    String search = s.toString().toLowerCase();
+                    String searchText = s.toString().toLowerCase();
 
                     for (AppInfo info : apps) {
-                        if (info.title.toLowerCase().startsWith(search))
+                        if (info.title.toLowerCase().startsWith(searchText))
                             find.add(info);
+                    }
+
+                    if (find.size() == 0 && search) {
+                        AppInfo searchAction = new AppInfo();
+                        searchAction.title = getString(R.string.search_item);
+
+                        find.add(searchAction);
                     }
 
                     listAdapter = new AppNameAdapter(find, searchBar, nb, nf, sb, sf, textSize);
                     appMenu.setAdapter(listAdapter);
                 }
             });
-        
+
         new Thread(new Runnable() {
                 public void run() {
                     apps = getAppsList();
@@ -126,21 +151,25 @@ public class MainActivity extends Activity {
         nf = prefs.getInt("nf", 0xFFF3F3F3);
         sb = prefs.getInt("sb", 0xFF005577);
         sf = prefs.getInt("sf", 0xFFFFFFFF);
-        
+
+        search = prefs.getBoolean("search", false);
+
         textSize = Integer.valueOf(prefs.getString("size", "15"));
-        
+
+        if (textSize < 2) textSize = 15;
+
         switch (prefs.getString("gravity", "0")) {
-        case "0":
-            ((LinearLayout.LayoutParams) menu.getLayoutParams()).gravity = Gravity.TOP;
-            break;
-        case "1":
-            ((LinearLayout.LayoutParams) menu.getLayoutParams()).gravity = Gravity.BOTTOM;
-            break;
+            case "0":
+                ((LinearLayout.LayoutParams) menu.getLayoutParams()).gravity = Gravity.TOP;
+                break;
+            case "1":
+                ((LinearLayout.LayoutParams) menu.getLayoutParams()).gravity = Gravity.BOTTOM;
+                break;
         }
-        
+
         searchBar.setTextSize(textSize);
         searchBar.setTextColor(nf);
-        
+
         menu.setBackgroundColor(nb);
     }
 

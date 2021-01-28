@@ -16,6 +16,9 @@
     
     <string name="colors">Цвета</string>
     <string name="layout">Макет</string>
-    <string name="selpos">Выберите позицию</string>
+    <string name="other">Другое</string>
     
+    <string name="search">Включить поиск в Google</string>
+    <string name="search_item">Google поиск</string>
+    <string name="selpos">Выберите позицию</string>
 </resources>

@@ -51,4 +51,14 @@
         
     </PreferenceCategory>
     
+    <PreferenceCategory
+        android:title="@string/other">
+        
+        <CheckBoxPreference
+            android:key="search"
+            android:defaultValue="false"
+            android:title="@string/search"/>
+      
+    </PreferenceCategory>
+      
 </PreferenceScreen>
