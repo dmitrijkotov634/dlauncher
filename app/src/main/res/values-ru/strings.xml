@@ -9,7 +9,6 @@
     <string name="gravity">Позиция панели</string>
     <string name="size">Размер текста</string>
     <string name="selpos">Выберите позицию</string>
-    <string name="opacity">Непрозрачность фона</string>
     
     <string-array name="gravity">
         <item>Верх</item>

@@ -170,8 +170,6 @@ public class MainActivity extends Activity {
         searchBar.setTextColor(nf);
 
         menu.setBackgroundColor(nb);
-        
-        menu.getBackground().setAlpha(prefs.getInt("opacity", 255));
     }
 
     public List<AppInfo> getAppsList() {

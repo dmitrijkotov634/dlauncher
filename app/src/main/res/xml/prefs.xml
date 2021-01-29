@@ -11,33 +11,25 @@
             android:key="nb"
             android:title="@string/nb"
             android:defaultValue="#000000"
-            alphaSlider="false" />
+            alphaSlider="true" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:key="nf"
             android:title="@string/nf"
             android:defaultValue="#F3F3F3"
-            alphaSlider="false" />
+            alphaSlider="true" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:key="sb"
             android:title="@string/sb"
             android:defaultValue="#005577"
-            alphaSlider="false" />
+            alphaSlider="true" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:key="sf"
             android:title="@string/sf"
             android:defaultValue="#FFFFFF"
-            alphaSlider="false" />
-        
-        <SeekBarPreference
-            android:key="opacity"
-            android:title="@string/opacity"
-            android:max="255"
-            android:defaultValue="255"
-            android:inputType="numberSigned"/>
-        
+            alphaSlider="true" />
     </PreferenceCategory>
     
     <PreferenceCategory
