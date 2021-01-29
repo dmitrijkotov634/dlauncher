@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">dlauncher</string>
-    <string name="settings_name">Launcher Settings</string>
+    <string name="pref_name">Launcher Settings</string>
     
     <string name="nb">Normal Background Color</string>
     <string name="nf">Normal Foreground Color"</string>

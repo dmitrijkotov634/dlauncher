@@ -24,8 +24,8 @@
         </activity>
         
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/settings_name">
+            android:name=".PrefActivity"
+            android:label="@string/pref_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
