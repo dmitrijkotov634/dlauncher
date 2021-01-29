@@ -8,6 +8,8 @@
     
     <string name="gravity">Позиция панели</string>
     <string name="size">Размер текста</string>
+    <string name="selpos">Выберите позицию</string>
+    <string name="opacity">Непрозрачность фона</string>
     
     <string-array name="gravity">
         <item>Верх</item>
@@ -20,5 +22,4 @@
     
     <string name="search">Включить поиск в Google</string>
     <string name="search_item">Google поиск</string>
-    <string name="selpos">Выберите позицию</string>
 </resources>

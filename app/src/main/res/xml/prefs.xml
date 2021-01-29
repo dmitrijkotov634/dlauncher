@@ -30,6 +30,14 @@
             android:title="@string/sf"
             android:defaultValue="#FFFFFF"
             alphaSlider="false" />
+        
+        <SeekBarPreference
+            android:key="opacity"
+            android:title="@string/opacity"
+            android:max="255"
+            android:defaultValue="255"
+            android:inputType="numberSigned"/>
+        
     </PreferenceCategory>
     
     <PreferenceCategory

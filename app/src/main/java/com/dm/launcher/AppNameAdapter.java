@@ -37,7 +37,7 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
             holder.appName.setBackgroundColor(sb);
             holder.appName.setTextColor(sf);
         } else {
-            holder.appName.setBackgroundColor(nb);
+            holder.appName.setBackgroundResource(0x00000000);
             holder.appName.setTextColor(nf);
         }
         holder.appName.setText(this.data.get(position).title);
@@ -75,7 +75,9 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            if (data.get(getLayoutPosition()).packageName == null) {
+            String pkg = data.get(getLayoutPosition()).packageName;
+            
+            if (pkg == null) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
                                            Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
                 view.getContext().startActivity(intent);

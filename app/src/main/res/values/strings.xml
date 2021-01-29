@@ -10,6 +10,8 @@
     
     <string name="gravity">Panel position</string>
     <string name="size">Text size</string>
+    <string name="search">Enable Google search</string>
+    <string name="opacity">Background opacity</string>
     
     <string-array name="gravity">
         <item>Top</item>
@@ -20,7 +22,6 @@
     <string name="layout">Layout</string>
     <string name="other">Other</string>
     
-    <string name="search">Enable Google search</string>
     <string name="search_item">Google search</string>
     <string name="selpos">Select position</string>
 </resources>
