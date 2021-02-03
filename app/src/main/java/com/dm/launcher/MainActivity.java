@@ -32,13 +32,13 @@ public class MainActivity extends Activity {
     private EditText searchBar;
     private LinearLayout menu;
 
-    AppNameAdapter listAdapter;
+    private AppNameAdapter listAdapter;
     private List<AppInfo> apps;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
-    int nb, nf, sb, sf, textSize;
+    private int nb, nf, sb, sf, textSize;
 
-    boolean search;
+    private boolean search, icons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +55,9 @@ public class MainActivity extends Activity {
             = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         appMenu.setLayoutManager(AppMenu);
-        
+
         apps = new ArrayList<AppInfo>();
-        
+
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -113,7 +113,9 @@ public class MainActivity extends Activity {
                         find.add(searchAction);
                     }
 
-                    listAdapter = new AppNameAdapter(find, searchBar, nb, nf, sb, sf, textSize);
+                    listAdapter = new AppNameAdapter(find, searchBar, nb, nf, sb, sf,
+                                                     textSize, icons);
+
                     appMenu.setAdapter(listAdapter);
                 }
             });
@@ -121,7 +123,8 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
                 public void run() {
                     apps = getAppsList();
-                    listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf, textSize);
+                    listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf,
+                                                     textSize, icons);
 
                     appMenu.post(new Runnable() {
                             public void run() {
@@ -152,6 +155,7 @@ public class MainActivity extends Activity {
         sf = prefs.getInt("sf", 0xFFFFFFFF);
 
         search = prefs.getBoolean("search", false);
+        icons = prefs.getBoolean("icons", false);
 
         textSize = Integer.valueOf(prefs.getString("size", "15"));
 
@@ -187,8 +191,16 @@ public class MainActivity extends Activity {
             app.activity = info.activityInfo.name;
             app.title = (String) info.loadLabel(pm);
             app.packageName = info.activityInfo.applicationInfo.packageName;
+            app.icon = info.activityInfo.loadIcon(pm);
             data.add(app);
         }
+
+        AppInfo prefs = new AppInfo();
+        prefs.activity = getPackageName() + ".PrefActivity";
+        prefs.title = "Launcher settings";
+        prefs.packageName = getPackageName();
+        prefs.icon = getResources().getDrawable(R.drawable.ic_launcher);
+        data.add(prefs);
 
         return data;
     }

@@ -11,36 +11,53 @@ import android.widget.EditText;
 import android.view.View.OnLongClickListener;
 import android.net.Uri;
 import android.provider.Settings;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHolder> {
 
-    public EditText searchBar;
-    int nb, nf, sb, sf, textSize;
+    private EditText searchBar;
+    private int nb, nf, sb, sf, textSize;
+
+    private boolean icons = false;
 
     public List<AppInfo> data;
-    public AppNameAdapter(List<AppInfo> data, EditText searchBar, int nb, int nf, int sb, int sf, int textSize) {
+
+    public AppNameAdapter(List<AppInfo> data, EditText searchBar, int nb, int nf, int sb, int sf, int textSize, boolean icons) {
         this.data = data;
         this.searchBar = searchBar;
+        this.icons = icons; this.textSize = textSize;
         this.nb = nb; this.nf = nf; this.sb = sb; this.sf = sf;
-        this.textSize = textSize;
+
     }
 
     @Override
     public AppNameAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_name, parent, false);
+        View rowItem;
+
+        if (icons) 
+            rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_name_icons, parent, false);
+        else 
+            rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_name, parent, false);
+
         return new ViewHolder(rowItem);
     }
 
     @Override
     public void onBindViewHolder(AppNameAdapter.ViewHolder holder, int position) {
         if (position == 0) {
-            holder.appName.setBackgroundColor(sb);
-            holder.appName.setTextColor(sf);
+            holder.item.setBackgroundColor(sb);
+            holder.name.setTextColor(sf);
         } else {
-            holder.appName.setBackgroundResource(0x00000000);
-            holder.appName.setTextColor(nf);
+            holder.item.setBackgroundResource(0x00000000);
+            holder.name.setTextColor(nf);
         }
-        holder.appName.setText(this.data.get(position).title);
+        holder.name.setText(this.data.get(position).title);
+
+        if (icons) {
+            holder.icon.setBackgroundDrawable(this.data.get(position).icon);
+            holder.icon.setLayoutParams(new LinearLayout.LayoutParams(textSize * 2, textSize * 2));
+        }
     }
 
     @Override
@@ -49,15 +66,21 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView appName;
+        private LinearLayout item;
+        private ImageView icon;
+        private TextView name;
 
         public ViewHolder(View view) {
             super(view);
 
-            this.appName = view.findViewById(R.id.app_name);
-            
-            appName.setTextSize(textSize);
-            
+            this.item = view.findViewById(R.id.item);
+            this.name = view.findViewById(R.id.name);
+
+            if (icons)
+                this.icon = view.findViewById(R.id.icon);
+
+            name.setTextSize(textSize);
+
             view.setOnClickListener(this);
             view.setOnLongClickListener(new OnLongClickListener() { 
                     @Override
@@ -76,11 +99,10 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
         @Override
         public void onClick(View view) {
             String pkg = data.get(getLayoutPosition()).packageName;
-            
+
             if (pkg == null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
-                view.getContext().startActivity(intent);
+                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
+                                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString())));
             } else {
                 Intent intent = new Intent();
                 intent.setClassName(data.get(getLayoutPosition()).packageName,
@@ -89,7 +111,7 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
                 view.getContext().startActivity(intent);
                 searchBar.setText("");
             }
-            
+
         }
     }
 }

@@ -2,25 +2,26 @@
 <resources>
     <string name="app_name">dlauncher</string>
     <string name="pref_name">Launcher Settings</string>
-    
+
     <string name="nb">Normal Background Color</string>
     <string name="nf">Normal Foreground Color"</string>
     <string name="sb">Selected Background Color</string>
     <string name="sf">Selected Foreground Color</string>
-    
+
     <string name="gravity">Panel position</string>
     <string name="size">Text size</string>
     <string name="search">Enable Google search</string>
-    
+    <string name="icons">Enable icons</string>
+
     <string-array name="gravity">
         <item>Top</item>
         <item>Bottom</item>
 	</string-array>
-    
+
     <string name="colors">Colors</string>
     <string name="layout">Layout</string>
     <string name="other">Other</string>
-    
+
     <string name="search_item">Google search</string>
     <string name="selpos">Select position</string>
 </resources>

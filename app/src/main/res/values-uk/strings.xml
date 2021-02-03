@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="nb">Нормальний колір фону</string>
     <string name="nf">Нормальний колір переднього плану</string>
     <string name="sb">Виділений колір фону</string>
     <string name="sf">Виділений колір переднього плану</string>
-    
+
     <string name="gravity">Позиція панелі</string>
     <string name="size">Розмір тексту</string>
     <string name="selpos">Виберіть позицію</string>
-    
+    <string name="icons">Включити іконки</string>
+
     <string-array name="gravity">
         <item>Верх</item>
         <item>Низ</item>
 	</string-array>
-    
+
     <string name="colors">Кольори</string>
     <string name="layout">Макет</string>
     <string name="other">інше</string>
-    
+
     <string name="search">Включити пошук в Google</string>
-    <string name="search_item">Пошук search</string>
+    <string name="search_item">Google пошук</string>
 </resources>

@@ -58,7 +58,12 @@
             android:key="search"
             android:defaultValue="false"
             android:title="@string/search"/>
-      
+        
+        <CheckBoxPreference
+            android:key="icons"
+            android:defaultValue="false"
+            android:title="@string/icons"/>
+        
     </PreferenceCategory>
       
 </PreferenceScreen>

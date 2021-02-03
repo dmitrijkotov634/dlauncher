@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="nb">Нормальный цвет фона</string>
     <string name="nf">Нормальный цвет переднего плана</string>
     <string name="sb">Выделенный цвет фона</string>
     <string name="sf">Выделенный цвет переднего плана</string>
-    
+
     <string name="gravity">Позиция панели</string>
     <string name="size">Размер текста</string>
     <string name="selpos">Выберите позицию</string>
-    
+    <string name="icons">Включить иконки</string>
+
     <string-array name="gravity">
         <item>Верх</item>
         <item>Низ</item>
 	</string-array>
-    
+
     <string name="colors">Цвета</string>
     <string name="layout">Макет</string>
     <string name="other">Другое</string>
-    
+
     <string name="search">Включить поиск в Google</string>
     <string name="search_item">Google поиск</string>
 </resources>
