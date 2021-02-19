@@ -13,12 +13,12 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.content.Context;
 
 public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHolder> {
 
     private EditText searchBar;
     private int nb, nf, sb, sf, textSize;
-
     private boolean icons = false;
 
     public List<AppInfo> data;
@@ -26,18 +26,21 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
     public AppNameAdapter(List<AppInfo> data, EditText searchBar, int nb, int nf, int sb, int sf, int textSize, boolean icons) {
         this.data = data;
         this.searchBar = searchBar;
-        this.icons = icons; this.textSize = textSize;
-        this.nb = nb; this.nf = nf; this.sb = sb; this.sf = sf;
-
+        this.icons = icons;
+        this.textSize = textSize;
+        this.nb = nb;
+        this.nf = nf;
+        this.sb = sb;
+        this.sf = sf;
     }
 
     @Override
     public AppNameAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View rowItem;
 
-        if (icons) 
+        if (icons)
             rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_name_icons, parent, false);
-        else 
+        else
             rowItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_name, parent, false);
 
         return new ViewHolder(rowItem);
@@ -65,6 +68,26 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
         return this.data.size();
     }
 
+    public void startApp(Context context, int position) {
+        String pkg = data.get(position).packageName;
+
+        if (pkg == null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                                       Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            
+        } else {
+            Intent intent = new Intent();
+            intent.setClassName(data.get(position).packageName,
+                                data.get(position).activity);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+        searchBar.setText("");
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private LinearLayout item;
         private ImageView icon;
@@ -82,36 +105,23 @@ public class AppNameAdapter extends RecyclerView.Adapter<AppNameAdapter.ViewHold
             name.setTextSize(textSize);
 
             view.setOnClickListener(this);
-            view.setOnLongClickListener(new OnLongClickListener() { 
-                    @Override
-                    public boolean onLongClick(View view) {
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.fromParts("package", data.get(getLayoutPosition()).packageName, null));
-                        view.getContext().startActivity(intent);
+            view.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package", data.get(getLayoutPosition()).packageName, null));
+                    view.getContext().startActivity(intent);
 
-                        return true;
-                    }
-                });
+                    return true;
+                }
+            });
 
         }
 
         @Override
         public void onClick(View view) {
-            String pkg = data.get(getLayoutPosition()).packageName;
-
-            if (pkg == null) {
-                view.getContext().startActivity(new Intent(Intent.ACTION_VIEW,
-                                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString())));
-            } else {
-                Intent intent = new Intent();
-                intent.setClassName(data.get(getLayoutPosition()).packageName,
-                                    data.get(getLayoutPosition()).activity);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                view.getContext().startActivity(intent);
-                searchBar.setText("");
-            }
-
+            startApp(view.getContext(), getLayoutPosition());
         }
     }
 }

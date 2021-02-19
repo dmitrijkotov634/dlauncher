@@ -23,22 +23,23 @@ import android.widget.LinearLayout;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-import android.net.Uri;
 
-public class MainActivity extends Activity { 
+public class MainActivity extends Activity {
 
     private RecyclerView appMenu;
     private EditText searchBar;
     private LinearLayout menu;
 
     private AppNameAdapter listAdapter;
-    private List<AppInfo> apps;
+    private List < AppInfo > apps;
     private SharedPreferences prefs;
 
     private int nb, nf, sb, sf, textSize;
 
     private boolean search, icons;
+
+    private PackageReceiver PackageReceiver;
+    private Thread appsLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class MainActivity extends Activity {
         searchBar = findViewById(R.id.search_bar);
         menu = findViewById(R.id.menu);
 
+        apps = new ArrayList<AppInfo>();
+
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         LinearLayoutManager AppMenu
@@ -56,30 +59,12 @@ public class MainActivity extends Activity {
 
         appMenu.setLayoutManager(AppMenu);
 
-        apps = new ArrayList<AppInfo>();
-
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        if (listAdapter.data.size() > 0) {
-                            String pkg = listAdapter.data.get(0).packageName;
-
-                            if (pkg == null && search) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                                           Uri.parse("https://www.google.com/search?q=" + searchBar.getText().toString()));
-                                startActivity(intent);
-
-                            } else {
-                                Intent intent = new Intent();
-                                intent.setClassName(pkg, listAdapter.data.get(0).activity);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-
-                            searchBar.setText("");
-                            return true;
-                        }
+                        listAdapter.startApp(getApplicationContext(), 0);
+                        return true;
                     }
                     return false;
                 }
@@ -88,12 +73,10 @@ public class MainActivity extends Activity {
         searchBar.addTextChangedListener(new TextWatcher() {
 
                 @Override
-                public void afterTextChanged(Editable s) {
-                }
+                public void afterTextChanged(Editable s) {}
 
                 public void beforeTextChanged(CharSequence s, int start,
-                                              int count, int after) {
-                }
+                                              int count, int after) {}
 
                 public void onTextChanged(CharSequence s, int start,
                                           int before, int count) {
@@ -101,7 +84,7 @@ public class MainActivity extends Activity {
 
                     String searchText = s.toString().toLowerCase();
 
-                    for (AppInfo info : apps) {
+                    for (AppInfo info: apps) {
                         if (info.title.toLowerCase().startsWith(searchText))
                             find.add(info);
                     }
@@ -120,20 +103,10 @@ public class MainActivity extends Activity {
                 }
             });
 
-        new Thread(new Runnable() {
-                public void run() {
-                    apps = getAppsList();
-                    listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf,
-                                                     textSize, icons);
+        appsLoader = new AppsLoader();
+        appsLoader.run();
 
-                    appMenu.post(new Runnable() {
-                            public void run() {
-                                appMenu.setAdapter(listAdapter);
-                            }
-                        });
-                }
-            }).start();
-
+        PackageReceiver = new PackageReceiver(getApplicationContext(), appsLoader);
     }
 
     @Override
@@ -141,7 +114,11 @@ public class MainActivity extends Activity {
         super.onResume();
         loadPrefs();
     }
-
+    
+    @Override
+    public void onBackPressed() {
+    }
+    
     public void clickBackground(View view) {
         searchBar.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -176,33 +153,40 @@ public class MainActivity extends Activity {
         menu.setBackgroundColor(nb);
     }
 
-    public List<AppInfo> getAppsList() {
-        PackageManager pm = getApplicationContext().getPackageManager();
+    class AppsLoader extends Thread {
+        public void run() {
+            PackageManager pm = getApplicationContext().getPackageManager();
 
-        Intent i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
+            Intent i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+            List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
 
-        ArrayList<AppInfo> data = new ArrayList<AppInfo>(allApps.size());
+            apps = new ArrayList<AppInfo>(allApps.size());
 
-        for (ResolveInfo info : allApps) {
-            AppInfo app = new AppInfo();
-            app.activity = info.activityInfo.name;
-            app.title = (String) info.loadLabel(pm);
-            app.packageName = info.activityInfo.applicationInfo.packageName;
-            app.icon = info.activityInfo.loadIcon(pm);
-            data.add(app);
+            for (ResolveInfo info: allApps) {
+                AppInfo app = new AppInfo();
+                app.activity = info.activityInfo.name;
+                app.title = (String) info.loadLabel(pm);
+                app.packageName = info.activityInfo.applicationInfo.packageName;
+                app.icon = info.activityInfo.loadIcon(pm);
+                apps.add(app);
+            }
+
+            AppInfo prefs = new AppInfo();
+            prefs.activity = getPackageName() + ".PrefActivity";
+            prefs.title = "Launcher settings";
+            prefs.packageName = getPackageName();
+            prefs.icon = getResources().getDrawable(R.drawable.ic_launcher);
+            apps.add(prefs);
+
+            appMenu.post(new Runnable() {
+                    public void run() {
+                        listAdapter = new AppNameAdapter(apps, searchBar, nb, nf, sb, sf,
+                                                         textSize, icons);
+                        appMenu.setAdapter(listAdapter);
+                    }
+                });
         }
-
-        AppInfo prefs = new AppInfo();
-        prefs.activity = getPackageName() + ".PrefActivity";
-        prefs.title = "Launcher settings";
-        prefs.packageName = getPackageName();
-        prefs.icon = getResources().getDrawable(R.drawable.ic_launcher);
-        data.add(prefs);
-
-        return data;
     }
-
-} 
+}
